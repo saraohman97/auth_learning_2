@@ -58,7 +58,12 @@ const RegisterForm = () => {
   return (
     <>
       <h2 className="text-2xl">Sign up form E-shop</h2>
-      <button className="w-full bg-blue-200 p-2 flex items-center justify-center gap-2 rounded-lg">
+      <button
+        onClick={() => {
+          signIn("google");
+        }}
+        className="w-full bg-blue-200 p-2 flex items-center justify-center gap-2 rounded-lg"
+      >
         <AiOutlineGoogle />
         <p>Sign up with Google</p>
       </button>
