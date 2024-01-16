@@ -1,7 +1,6 @@
 "use client";
 
 import { useState } from "react";
-import Input from "./input";
 import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
 import Link from "next/link";
 import { AiOutlineGoogle } from "react-icons/ai";
@@ -9,15 +8,37 @@ import axios from "axios";
 import { toast } from "react-toastify";
 import { signIn } from "next-auth/react";
 import { useRouter } from "next/navigation";
+import {
+  Form,
+  FormControl,
+  FormDescription,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "../ui/form";
+import { Button } from "../ui/button";
+import { Input } from "../ui/input";
+import { zodResolver } from "@hookform/resolvers/zod";
+import * as z from "zod";
+import Image from "next/image";
+
+const formSchema = z.object({
+  name: z.string().min(2, {
+    message: "Username must be at least 2 characters.",
+  }),
+  email: z.string(),
+  password: z.string(),
+});
+
+// type SignUpValues = z.infer<typeof formSchema>
 
 const RegisterForm = () => {
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-  } = useForm<FieldValues>({
+
+  const form = useForm<z.infer<typeof formSchema>>({
+    resolver: zodResolver(formSchema),
     defaultValues: {
       name: "",
       email: "",
@@ -25,7 +46,7 @@ const RegisterForm = () => {
     },
   });
 
-  const onSubmit: SubmitHandler<FieldValues> = (data) => {
+  function onSubmit(data: z.infer<typeof formSchema>) {
     setIsLoading(true);
 
     axios
@@ -53,59 +74,61 @@ const RegisterForm = () => {
       .finally(() => {
         setIsLoading(false);
       });
-  };
+  }
 
   return (
-    <>
-      <h2 className="text-2xl">Sign up form E-shop</h2>
-      <button
-        onClick={() => {
-          signIn("google");
-        }}
-        className="w-full bg-blue-200 p-2 flex items-center justify-center gap-2 rounded-lg"
-      >
-        <AiOutlineGoogle />
-        <p>Sign up with Google</p>
-      </button>
-      <hr className="bg-slate-300 w-full h-px" />
-      <Input
-        id="name"
-        label="Name"
-        disabled={isLoading}
-        register={register}
-        errors={errors}
-        required
-      />
-      <Input
-        id="email"
-        label="Email"
-        disabled={isLoading}
-        register={register}
-        errors={errors}
-        required
-      />
-      <Input
-        id="password"
-        label="Password"
-        disabled={isLoading}
-        register={register}
-        errors={errors}
-        required
-        type="password"
-      />
-      <button
-        className="bg-blue-200 p-2 rounded-lg w-full"
-        onClick={handleSubmit(onSubmit)}
-      >
-        {isLoading ? "Loading" : "Sign up"}
-      </button>
-      <p>
-        Already have an account?{" "}
-        <Link href="/login" className="underline">
-          Login
-        </Link>
-      </p>
-    </>
+    <div className="flex flex-row items-center justify-around gap-4 w-full">
+      <Form {...form}>
+        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+          <FormField
+            control={form.control}
+            name="name"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Name</FormLabel>
+                <FormControl>
+                  <Input placeholder="shadcn" {...field} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+
+          <FormField
+            control={form.control}
+            name="email"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Email</FormLabel>
+                <FormControl>
+                  <Input placeholder="shadcn" {...field} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+
+          <FormField
+            control={form.control}
+            name="password"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Password</FormLabel>
+                <FormControl>
+                  <Input placeholder="shadcn" {...field} />
+                </FormControl>
+                <FormDescription>
+                  The password must contain 5 characters.
+                </FormDescription>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <Button type="submit">Sign up</Button>
+        </form>
+      </Form>
+      <Image src="/lady.jpg" className="max-h-[400px] w-[300px] object-cover" alt="" width={400} height={400} />
+    </div>
   );
 };
 
