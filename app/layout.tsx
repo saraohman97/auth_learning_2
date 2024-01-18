@@ -4,7 +4,6 @@ import "./globals.css";
 import Navbar from "@/components/navbar";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/ReactToastify.min.css";
-import { getCurrentUser } from "@/actions/getCurrentUser";
 
 const inter = Inter({ subsets: ["latin"] });
 
