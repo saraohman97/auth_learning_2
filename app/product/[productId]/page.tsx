@@ -6,7 +6,7 @@ import SetColor from "@/components/products/set-color";
 import SetQuantity from "@/components/products/set-quantity";
 import { Button } from "@/components/ui/button";
 import { useCart } from "@/hooks/useCart";
-import { product } from "@/utils/product";
+import { products } from "@/utils/products";
 import { useRouter } from "next/navigation";
 import { useCallback, useEffect, useState } from "react";
 import { AiOutlineCheck } from "react-icons/ai";
@@ -36,6 +36,8 @@ export type selectedImgType = {
 };
 
 const ProductPage = ({ params }: { params: IParams }) => {
+  const product = products.find((item) => item.id === params.productId)
+  
   const router = useRouter()
   const { handleAddProductToCart, cartProducts } = useCart();
   const [isProductInCart, setIsProductInCart] = useState(false)

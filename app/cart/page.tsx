@@ -3,11 +3,12 @@
 import ItemContent from "@/components/products/item-content";
 import { Button } from "@/components/ui/button";
 import { useCart } from "@/hooks/useCart";
+import { formatPrice } from "@/utils/format-price";
 import Link from "next/link";
 import { AiOutlineArrowLeft } from "react-icons/ai";
 
 const CartPage = () => {
-  const { cartProducts, handleClearCart } = useCart();
+  const { cartProducts, handleClearCart, cartTotalAmount } = useCart();
 
   if (!cartProducts || cartProducts.length === 0) {
     return (
@@ -48,9 +49,9 @@ const CartPage = () => {
           </Button>
         </div>
         <div className="text-sm flex flex-col gap-1 items-start">
-          <div className="flex justify-between w-4 text-base font-semibold">
-            <span>Subtotal</span>
-            <span>$1,000</span>
+          <div className="flex justify-between w-4 text-base font-semibold gap-2">
+            <span>Subtotal: </span>
+            <span>{formatPrice(cartTotalAmount)}</span>
           </div>
           <p className="text-slate-500">Taxes and shipping calculated at checkout.</p>
         <Button>Checkout</Button>

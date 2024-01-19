@@ -33,7 +33,7 @@ const ItemContent: React.FC<ItemContentProps> = ({ item }) => {
           <div>{item.selectedImg.color}</div>
           <div
             onClick={() => handleRemoveProductFromCart(item)}
-            className="underline cursor-pointer p-1 hover:bg-slate-100 rounded-lg w-fit"
+            className="underline cursor-pointer p-1 hover:bg-slate-100 rounded-sm w-fit"
           >
             Remove
           </div>

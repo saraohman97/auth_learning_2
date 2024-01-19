@@ -1,8 +1,7 @@
-// 'use client'
 import Link from "next/link";
-// import { useEffect, useState } from "react";
 import UserMenu from "./user-menu";
 import { getCurrentUser } from "@/actions/getCurrentUser";
+import NavbarCart from "./navbar-cart";
 
 const Navbar = async () => {
   //Hydration
@@ -19,6 +18,7 @@ const Navbar = async () => {
   return (
     <div className="shadow-md shadow-black/5 top-0 w-full p-4 space-x-4 flex items-center justify-center bg-white">
       <Link href="/">Home</Link>
+      <NavbarCart />
       <Link href="/login">Login</Link>
       <Link href="/register">Register</Link>
       <UserMenu currentUser={currentUser} />
