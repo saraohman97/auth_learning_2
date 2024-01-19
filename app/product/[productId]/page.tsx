@@ -5,8 +5,11 @@ import ProductImage from "@/components/products/product-image";
 import SetColor from "@/components/products/set-color";
 import SetQuantity from "@/components/products/set-quantity";
 import { Button } from "@/components/ui/button";
+import { useCart } from "@/hooks/useCart";
 import { product } from "@/utils/product";
-import { useCallback, useState } from "react";
+import { useRouter } from "next/navigation";
+import { useCallback, useEffect, useState } from "react";
+import { AiOutlineCheck } from "react-icons/ai";
 
 interface IParams {
   productId?: string;
@@ -33,6 +36,9 @@ export type selectedImgType = {
 };
 
 const ProductPage = ({ params }: { params: IParams }) => {
+  const router = useRouter()
+  const { handleAddProductToCart, cartProducts } = useCart();
+  const [isProductInCart, setIsProductInCart] = useState(false)
   const [cartProduct, setCartProduct] = useState<CartProductType>({
     id: product.id,
     name: product.name,
@@ -43,6 +49,18 @@ const ProductPage = ({ params }: { params: IParams }) => {
     quantity: 1,
     price: product.price,
   });
+
+  console.log(cartProducts);
+
+  useEffect(() => {
+    setIsProductInCart(false)
+    if(cartProducts) {
+      const existingIndex = cartProducts.findIndex((item) => item.id === product.id)
+      if(existingIndex > -1) {
+        setIsProductInCart(true)
+      }
+    }
+  }, [cartProducts])
 
   const handleColorSelect = useCallback(
     (value: selectedImgType) => {
@@ -99,6 +117,16 @@ const ProductPage = ({ params }: { params: IParams }) => {
             {product.inStock ? "In stock" : "Out of stock"}
           </div>
           <Horizontal />
+          {isProductInCart ? (<>
+          <p className="mb-2 text-slate-500 flex items-center gap-1">
+            <AiOutlineCheck size={20} className='text-teal-400' />
+            <span>Product Added To Cart</span>
+          </p>
+          <div>
+            <Button variant='outline' onClick={() => router.push('/cart')}>View Cart</Button>
+          </div>
+          </>) : 
+          (<>
           <SetColor
             cartProduct={cartProduct}
             images={product.images}
@@ -111,9 +139,13 @@ const ProductPage = ({ params }: { params: IParams }) => {
             handleQtyDecrease={handleQtyDecrease}
           />
           <Horizontal />
-          <Button>ADD TO CART</Button>
+          <Button onClick={() => handleAddProductToCart(cartProduct)}>
+            ADD TO CART
+          </Button>
+          </>)}
         </div>
       </div>
+
       <div className="flex flex-col mt-20 gap-4 p-10">
         <div>Add rating</div>
         <ListRating product={product} />
