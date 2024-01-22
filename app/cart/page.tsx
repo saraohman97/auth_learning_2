@@ -3,12 +3,19 @@
 import ItemContent from "@/components/products/item-content";
 import { Button } from "@/components/ui/button";
 import { useCart } from "@/hooks/useCart";
+import { SafeUser } from "@/types";
 import { formatPrice } from "@/utils/format-price";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { AiOutlineArrowLeft } from "react-icons/ai";
 
-const CartPage = () => {
+interface CartPageProps {
+  currentUser: SafeUser | null;
+}
+
+const CartPage: React.FC<CartPageProps> = ({ currentUser }) => {
   const { cartProducts, handleClearCart, cartTotalAmount } = useCart();
+  const router = useRouter();
 
   if (!cartProducts || cartProducts.length === 0) {
     return (
@@ -39,7 +46,7 @@ const CartPage = () => {
       <div>
         {cartProducts &&
           cartProducts.map((item) => {
-            return <ItemContent item={item} key={item.id} />
+            return <ItemContent item={item} key={item.id} />;
           })}
       </div>
       <div className="border-t border-slate-200 py-4 flex justify-between gap-4">
@@ -53,9 +60,17 @@ const CartPage = () => {
             <span>Subtotal: </span>
             <span>{formatPrice(cartTotalAmount)}</span>
           </div>
-          <p className="text-slate-500">Taxes and shipping calculated at checkout.</p>
-        <Button>Checkout</Button>
-        <Link
+          <p className="text-slate-500">
+            Taxes and shipping calculated at checkout.
+          </p>
+          <Button
+            onClick={() => {
+              currentUser ? router.push("/checkout") : router.push("/login");
+            }}
+          >
+            {currentUser ? "Checkout" : "Login to checkout"}
+          </Button>
+          <Link
             href="/"
             className="text-slate-500 flex items-center gap-1 mt-2"
           >
