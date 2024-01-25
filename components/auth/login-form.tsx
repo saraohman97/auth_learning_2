@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import Input from "./input";
+import Input from "../inputs/input";
 import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
 import Link from "next/link";
 import { AiOutlineGoogle } from "react-icons/ai";

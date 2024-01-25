@@ -1,9 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
-import Link from "next/link";
-import { AiOutlineGoogle } from "react-icons/ai";
+import { useForm } from "react-hook-form";
 import axios from "axios";
 import { toast } from "react-toastify";
 import { signIn } from "next-auth/react";
