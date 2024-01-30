@@ -10,7 +10,7 @@ async function getData(): Promise<TableProduct[]> {
 }
 
 export default async function DemoPage() {
-    const data = await getData();
+  const data = await getData();
 
   return (
     <div className="max-w-screen-lg mx-auto py-10">
