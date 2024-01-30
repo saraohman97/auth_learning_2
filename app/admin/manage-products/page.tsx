@@ -72,7 +72,8 @@ export default async function DemoPage() {
   const data = await getData()
 
   return (
-    <div className="container mx-auto py-10">
+    <div className="max-w-screen-lg mx-auto py-10">
+        <h2 className="text-xl text-center mb-4">Manage products</h2>
       <DataTable columns={columns} data={data} />
     </div>
   )
